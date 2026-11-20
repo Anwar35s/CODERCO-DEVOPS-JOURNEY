@@ -1,27 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ $# -ne 2 ]]; then
-  printf 'Usage: %s SOURCE_DIRECTORY DESTINATION_DIRECTORY\n' "$0" >&2
-  exit 2
-fi
+directory="bash_demo"
 
-source_dir=$1
-destination_dir=$2
-
-if [[ ! -d $source_dir ]]; then
-  printf 'Source directory does not exist: %s\n' "$source_dir" >&2
+if [[ -e $directory && ! -d $directory ]]; then
+  printf "'%s' exists but is not a directory.\n" "$directory" >&2
   exit 1
 fi
 
-mkdir -p "$destination_dir"
-shopt -s nullglob
-files=( "$source_dir"/*.txt )
+mkdir -p "$directory"
+cd "$directory"
 
-if (( ${#files[@]} == 0 )); then
-  printf 'No .txt files found in %s\n' "$source_dir"
-  exit 0
-fi
+today=$(date '+%Y-%m-%d')
+printf 'This file was created by a Bash script on %s\n' "$today" > demo.txt
 
-cp -p "${files[@]}" "$destination_dir/"
-printf 'Copied %d .txt file(s) to %s\n' "${#files[@]}" "$destination_dir"
+printf "Directory '%s' is ready. File 'demo.txt' created.\n" "$directory"
+printf '\nFile contents:\n'
+cat demo.txt
