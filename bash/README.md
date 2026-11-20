@@ -1,6 +1,6 @@
 # Bash Scripting
 
-I’ve completed the Bash Scripting module with CoderCo DevOps Academy. The module helped me practise turning repeatable tasks into scripts, including through the Bash Battle Arena exercises.
+I’ve completed the Bash Scripting module with CoderCo DevOps Academy. The module helped me practise turning repeatable tasks into scripts.
 
 ## Topics practised
 
@@ -12,14 +12,12 @@ I’ve completed the Bash Scripting module with CoderCo DevOps Academy. The modu
 - Environment variables and `PATH`
 - Reading and writing files, and checksums
 
-## Portfolio projects
+## Challenges and scripts
 
-The scripts in [scripts/](scripts/) are portfolio implementations based on the four projects I completed:
-
-1. Arithmetic calculator
-2. File operations automation
-3. File permission checker
-4. Timestamped backup script
+1. **Basic arithmetic calculator** — prompts for two numbers, calculates addition, subtraction, multiplication, and division, and handles division by zero.
+2. **File operations** — creates `bash_demo/demo.txt`, writes the current date, and displays the contents.
+3. **File checker with permissions** — prompts for a filename and reports whether it exists and is readable, writable, and executable.
+4. **Text file backup** — prompts for a source directory, creates a timestamped backup directory, copies its `.txt` files, and reports the count.
 
 I also included [fly35x.sh](scripts/fly35x.sh), my first small “Hello World” script.
 
@@ -28,12 +26,17 @@ I also included [fly35x.sh](scripts/fly35x.sh), my first small “Hello World”
 From this directory:
 
 ```bash
-chmod +x scripts/*.sh
-./scripts/arithmetic_calculator.sh 7 5 +
-./scripts/file_operations.sh ./Arena ./Backup
-./scripts/file_permission_checker.sh ./Arena
-./scripts/timestamped_backup.sh ./Arena ./backups
+./scripts/arithmetic_calculator.sh
+./scripts/file_operations.sh
+./scripts/file_permission_checker.sh
+./scripts/timestamped_backup.sh
 ./scripts/fly35x.sh
 ```
 
-The backup script checks that its source directory exists before creating an archive.
+If needed, make the scripts executable first:
+
+```bash
+chmod +x scripts/*.sh
+```
+
+The backup script checks that the source directory exists before copying. Its timestamp includes seconds so separate runs get unique backup directory names.
