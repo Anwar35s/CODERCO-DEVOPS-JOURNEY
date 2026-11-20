@@ -1,34 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ $# -ne 1 ]]; then
-  printf 'Usage: %s PATH\n' "$0" >&2
-  exit 2
-fi
+read -r -p "Enter filename to check: " filename
 
-path=$1
-
-if [[ ! -e $path ]]; then
-  printf 'Path does not exist: %s\n' "$path" >&2
+if [[ ! -f $filename ]]; then
+  printf "File '%s' does not exist or is not a regular file.\n" "$filename"
   exit 1
 fi
 
-printf 'Permission check for: %s\n' "$path"
+printf "\nFile '%s' exists.\n" "$filename"
 
-if [[ -r $path ]]; then
-  printf 'Readable: yes\n'
+if [[ -r $filename ]]; then
+  printf '✓ File is readable\n'
 else
-  printf 'Readable: no\n'
+  printf '✗ File is not readable\n'
 fi
 
-if [[ -w $path ]]; then
-  printf 'Writable: yes\n'
+if [[ -w $filename ]]; then
+  printf '✓ File is writable\n'
 else
-  printf 'Writable: no\n'
+  printf '✗ File is not writable\n'
 fi
 
-if [[ -x $path ]]; then
-  printf 'Executable/searchable: yes\n'
+if [[ -x $filename ]]; then
+  printf '✓ File is executable\n'
 else
-  printf 'Executable/searchable: no\n'
+  printf '✗ File is not executable\n'
 fi
