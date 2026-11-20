@@ -1,34 +1,25 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-usage() {
-  printf 'Usage: %s INTEGER INTEGER [ + | - | * | / ]\n' "$0" >&2
-  exit 2
-}
+read -r -p "Enter first number: " first
+read -r -p "Enter second number: " second
 
-[[ $# -ge 2 && $# -le 3 ]] || usage
-
-num1=$1
-num2=$2
-operator=${3:-+}
-
-if ! [[ $num1 =~ ^-?[0-9]+$ && $num2 =~ ^-?[0-9]+$ ]]; then
-  printf 'Please provide whole numbers.\n' >&2
-  exit 2
+number_pattern='^-?([0-9]+([.][0-9]*)?|[.][0-9]+)$'
+if [[ ! $first =~ $number_pattern || ! $second =~ $number_pattern ]]; then
+  printf 'Please enter valid numbers.\n' >&2
+  exit 1
 fi
 
-case $operator in
-  +) result=$((num1 + num2)) ;;
-  -) result=$((num1 - num2)) ;;
-  \*) result=$((num1 * num2)) ;;
-  /)
-    if (( num2 == 0 )); then
-      printf 'Cannot divide by zero.\n' >&2
-      exit 1
-    fi
-    result=$((num1 / num2))
-    ;;
-  *) usage ;;
-esac
+awk -v a="$first" -v b="$second" '
+BEGIN {
+  printf "\nResults:\n"
+  printf "%g + %g = %g\n", a, b, a + b
+  printf "%g - %g = %g\n", a, b, a - b
+  printf "%g × %g = %g\n", a, b, a * b
 
-printf '%s %s %s = %s\n' "$num1" "$operator" "$num2" "$result"
+  if (b == 0) {
+    printf "%g ÷ %g = undefined (cannot divide by zero)\n", a, b
+  } else {
+    printf "%g ÷ %g = %g\n", a, b, a / b
+  }
+}'
