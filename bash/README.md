@@ -18,6 +18,7 @@ I’ve completed the Bash Scripting module with CoderCo DevOps Academy. The modu
 2. **File operations** — creates `bash_demo/demo.txt`, writes the current date, and displays the contents.
 3. **File checker with permissions** — prompts for a filename and reports whether it exists and is readable, writable, and executable.
 4. **Text file backup** — prompts for a source directory, creates a timestamped backup directory, copies its `.txt` files, and reports the count.
+5. **Battlefield archive** — creates the Battlefield files, moves `knight.txt` into Archive when present, and lists both directories.
 
 I also included [fly35x.sh](scripts/fly35x.sh), my first small “Hello World” script.
 
@@ -30,6 +31,7 @@ From this directory:
 ./scripts/file_operations.sh
 ./scripts/file_permission_checker.sh
 ./scripts/timestamped_backup.sh
+./scripts/battlefield_archive.sh
 ./scripts/fly35x.sh
 ```
 
