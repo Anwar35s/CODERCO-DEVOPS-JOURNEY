@@ -1,39 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ $# -lt 1 || $# -gt 2 ]]; then
-  printf 'Usage: %s SOURCE_DIRECTORY [BACKUP_DIRECTORY]\n' "$0" >&2
-  exit 2
-fi
-
-source_dir=$1
-backup_dir=${2:-./backups}
+read -r -p "Enter source directory: " source_dir
 
 if [[ ! -d $source_dir ]]; then
-  printf 'Source directory does not exist: %s\n' "$source_dir" >&2
+  printf "Source directory does not exist: %s\n" "$source_dir" >&2
   exit 1
 fi
 
-source_path=$(cd "$source_dir" && pwd -P)
+# Resolve the path so filenames beginning with a dash are handled safely.
+source_dir=$(cd "$source_dir" && pwd -P)
 
-if [[ $source_path == / ]]; then
-  printf 'Refusing to archive the filesystem root.\n' >&2
-  exit 1
-fi
+timestamp=$(date '+%Y-%m-%d_%H-%M-%S')
+backup_dir="backup_$timestamp"
 
-source_name=${source_path##*/}
 mkdir -p "$backup_dir"
-backup_path=$(cd "$backup_dir" && pwd -P)
+printf 'Backup directory created: %s\n' "$backup_dir"
+printf 'Copying .txt files...\n'
 
-case "$backup_path/" in
-  "$source_path/"*)
-    printf 'Backup directory must be outside the source directory.\n' >&2
-    exit 1
-    ;;
-esac
+shopt -s nullglob
+files=( "$source_dir"/*.txt )
+count=${#files[@]}
 
-timestamp=$(date '+%Y%m%d_%H%M%S')
-archive="$backup_path/${source_name}_${timestamp}.tar.gz"
+if (( count > 0 )); then
+  cp -p "${files[@]}" "$backup_dir/"
+fi
 
-tar -czf "$archive" -C "${source_path%/*}" "$source_name"
-printf 'Created backup: %s\n' "$archive"
+printf '\nBackup complete! Files backed up: %d\n' "$count"
